@@ -4,7 +4,14 @@
 # ]
 # ///
 import sys
-import timeit  # Explicitly forces the compiler to pull this from the standard library
+import types
+
+# FAKE TIMEIT MODULE: This intercepts and satisfies the browser instantly
+if 'timeit' not in sys.modules:
+    fake_timeit = types.ModuleType('timeit')
+    fake_timeit.default_timer = lambda: 0.0
+    sys.modules['timeit'] = fake_timeit
+
 import pgzrun
 import asyncio
 
