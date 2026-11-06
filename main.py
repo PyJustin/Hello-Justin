@@ -5,8 +5,13 @@
 # ///
 import sys
 import types
+import threading
 
-# FAKE TIMEIT MODULE: This intercepts and satisfies the browser instantly
+# 1. PYTHON 3.12 COMPATIBILITY PATCH FOR PYGAME ZERO TONE GENERATOR
+# Fixes 'Thread' object has no attribute 'setDaemon' crash
+threading.Thread.setDaemon = lambda self, daemonic: setattr(self, 'daemon', daemonic)
+
+# 2. FAKE TIMEIT MODULE: Satisfies the internal web loops instantly
 if 'timeit' not in sys.modules:
     fake_timeit = types.ModuleType('timeit')
     fake_timeit.default_timer = lambda: 0.0
