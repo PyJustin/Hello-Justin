@@ -1,26 +1,40 @@
-#!pgzrun       # must be 1st line
+import pygame
+import pgzero
 import pgzrun
+import asyncio
+
+#===============================================================================================================
+# Pygame ZERO code
 
 WIDTH = 800
 HEIGHT = 600
 
 
-#=========================================================================================================================
-# MAINLINE (Calls to Functions)
-#=========================================================================================================================
-
 def draw():
-    draw_hello()
+    screen.clear()
 
-#=========================================================================================================================
-# FUNCTION Definitions (sub-routines)
-#=========================================================================================================================
+    screen.draw.text("Welcome to Pygame Zero",(100, 100),fontname="lemon days",fontsize=40,color=(255,215,0))
+    screen.draw.text("Justin!",(630, 110),fontname="skincake",fontsize=40,color=(255,0,0))
 
-def draw_hello():
-    screen.draw.text("Welcome to Pygame ZERO ", center=(WIDTH // 2, HEIGHT // 2 - 30), fontname="lemon days", fontsize=32, color=(255, 255, 0))
-    screen.draw.text(" Justin ! ", center=(WIDTH // 2, HEIGHT // 2 + 30), fontname="skincake", fontsize=32, color=(255, 0, 0))
+#===============================================================================================================
+# Requirement for Pygbag running in a Browser
 
+async def main():
+    pgzrun.go()
 
-pgzrun.go()  # must be the last line to run in Pyscrypter ; but comment-out this line to build a PWA (no other changes required for a PWA).
+    while True:
+        try:
+            update()
+        except NameError:
+            pass
+
+        draw()
+        pygame.display.flip()
+
+        # Hands control back to Chrome/Android so it doesn't freeze gray
+        await asyncio.sleep(0)
+
+# Boot the script
+asyncio.run(main())
 
 
