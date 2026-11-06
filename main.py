@@ -5,13 +5,23 @@
 # ///
 import sys
 import types
-import threading
 
-# 1. PYTHON 3.12 COMPATIBILITY PATCH FOR PYGAME ZERO TONE GENERATOR
-# Fixes 'Thread' object has no attribute 'setDaemon' crash
-threading.Thread.setDaemon = lambda self, daemonic: setattr(self, 'daemon', daemonic)
+# 1. EMULATE THE THREADING ENGINE BEFORE PGZERO SEES IT
+# This traps the tone.py line 80 error before it can crash Python 3.12
+class SafeThread:
+    def __init__(self, *args, **kwargs):
+        pass
+    def setDaemon(self, val):
+        pass
+    def start(self):
+        pass
 
-# 2. FAKE TIMEIT MODULE: Satisfies the internal web loops instantly
+if 'threading' not in sys.modules:
+    fake_threading = types.ModuleType('threading')
+    fake_threading.Thread = SafeThread
+    sys.modules['threading'] = fake_threading
+
+# 2. EMULATE TIMEIT FOR THE INTERNAL GAME ENGINE CLOCK
 if 'timeit' not in sys.modules:
     fake_timeit = types.ModuleType('timeit')
     fake_timeit.default_timer = lambda: 0.0
