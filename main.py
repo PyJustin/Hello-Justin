@@ -1,9 +1,10 @@
 # /// script
 # dependencies = [
-#   "pgzero",
-#   "timeit"
+#   "pgzero"
 # ]
 # ///
+import sys
+import timeit  # Explicitly forces the compiler to pull this from the standard library
 import pgzrun
 import asyncio
 
@@ -25,7 +26,7 @@ async def main():
     pgzrun.go()
 
     while True:
-        # Crucial web handle: hands thread priority back to the Chrome/Android engine
+        # Hands thread priority back to the Chrome/Android engine
         await asyncio.sleep(0)
 
 # Fire the script loop
