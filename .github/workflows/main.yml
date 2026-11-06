@@ -2,8 +2,8 @@ name: Build and Deploy Pygbag PWA
 on:
   push:
     branches:
-      - main  # Triggers the build every time you commit to your main branch
-  workflow_dispatch: # Allows you to manually click "Run workflow" if needed
+      - main
+  workflow_dispatch:
 
 jobs:
   build-pygbag:
@@ -15,18 +15,17 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-size: '3.11'
+          python-version: '3.11'
 
       - name: Build WebAssembly App
         run: |
           python -m pip install pygbag
-          # Replace 'your_game_folder' with the name of the folder containing your main.py
-	  python -m pygbag --pgz --build ./your_game_folder/
-
+          python -m pygbag --pgz --build .
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: your_game_folder/build/web # This is where pygbag drops the compiled PWA files
+          folder: build/web
+
 
