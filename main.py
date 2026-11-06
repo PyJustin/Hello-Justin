@@ -1,6 +1,7 @@
 # /// script
 # dependencies = [
-#   "pgzero"
+#   "pgzero",
+#   "timeit"
 # ]
 # ///
 import pgzrun
@@ -21,7 +22,6 @@ def draw():
 # Pygbag Background Execution Loop
 
 async def main():
-    # Trigger the native Pygame Zero window allocation
     pgzrun.go()
 
     while True:
@@ -30,4 +30,3 @@ async def main():
 
 # Fire the script loop
 asyncio.run(main())
-
