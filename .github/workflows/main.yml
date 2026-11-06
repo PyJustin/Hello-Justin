@@ -1,9 +1,12 @@
-name: Build and Deploy Pygbag PWA 
+name: Build and Deploy Pygbag PWA
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build-pygbag:
@@ -22,11 +25,9 @@ jobs:
           python -m pip install pygbag
           python -m pygbag --build .
 
-
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: build/web
-
 
