@@ -5,23 +5,28 @@
 # ///
 import sys
 import types
+import pygame
 
-# 1. EMULATE THE THREADING ENGINE BEFORE PGZERO SEES IT
-# This traps the tone.py line 80 error before it can crash Python 3.12
+# 1. FIX THE WINDOW ICON RESOURCING CRASH
+# Creates a tiny blank fake surface so Pygame Zero doesn't look for its missing file
+pygame.font.init()
+if not pygame.display.get_init():
+    pygame.display.init()
+fake_icon = pygame.Surface((32, 32))
+pygame.display.set_icon = lambda icon_surface: None
+
+# 2. EMULATE THE THREADING ENGINE FOR PYTHON 3.12 COMPATIBILITY
 class SafeThread:
-    def __init__(self, *args, **kwargs):
-        pass
-    def setDaemon(self, val):
-        pass
-    def start(self):
-        pass
+    def __init__(self, *args, **kwargs): pass
+    def setDaemon(self, val): pass
+    def start(self): pass
 
 if 'threading' not in sys.modules:
     fake_threading = types.ModuleType('threading')
     fake_threading.Thread = SafeThread
     sys.modules['threading'] = fake_threading
 
-# 2. EMULATE TIMEIT FOR THE INTERNAL GAME ENGINE CLOCK
+# 3. EMULATE TIMEIT FOR THE INTERNAL GAME ENGINE CLOCK
 if 'timeit' not in sys.modules:
     fake_timeit = types.ModuleType('timeit')
     fake_timeit.default_timer = lambda: 0.0
