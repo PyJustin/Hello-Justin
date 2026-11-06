@@ -4,62 +4,47 @@ import pgzrun
 import asyncio
 
 #===============================================================================================================
-# Pygame ZERO setup
+# Pygame ZERO code
 
 WIDTH = 800
 HEIGHT = 600
 
-# 1. Initialize Pygame font module immediately
-pygame.font.init()
-
-# 2. Define the exact system font setups (or paths if files are present)
-# Pygbag defaults perfectly to standard web fonts when given direct paths or None
-try:
-    # If font files exist in /fonts folder
-    font_lemon = pygame.font.Font("fonts/lemon days.ttf", 40)
-    font_skin = pygame.font.Font("fonts/skincake.ttf", 40)
-except:
-    # Fail-safe backup so the text renders regardless
-    font_lemon = pygame.font.Font(None, 40)
-    font_skin = pygame.font.Font(None, 40)
-
 def draw():
-    # Force a dark canvas clear over the default light grey browser box
+    # Clear the screen container explicitly with a color block
     screen.fill((40, 40, 40))
 
-    # 3. Render and blend text directly onto the display surface
-    text_surface1 = font_lemon.render("Welcome to Pygame Zero", True, (255, 215, 0))
-    text_surface2 = font_skin.render("Justin!", True, (255, 0, 0))
-    
-    # Blit (draw) the rendered text surfaces to the canvas positions
-    screen.surface.blit(text_surface1, (100, 100))
-    screen.surface.blit(text_surface2, (630, 110))
+    # Render your custom font texts
+    screen.draw.text("Welcome to Pygame Zero", (100, 100), fontname="lemon days", fontsize=40, color=(255,215,0))
+    screen.draw.text("Justin!", (630, 110), fontname="skincake", fontsize=40, color=(255,0,0))
 
 #===============================================================================================================
 # Requirement for Pygbag running in a Browser
 
 async def main():
+    # 1. Mount the Pygame Zero variables globally into the local scope
+    global screen, keyboard, images, sounds
+
+    # 2. Boot the engine wrapper properties
     pgzrun.go()
 
     while True:
-        try:
-            pygame.event.pump()
-        except:
-            pass
+        # 3. Pull events to clear Chrome's canvas rendering restriction
+        pygame.event.pump()
 
         try:
             update()
         except NameError:
             pass
 
+        # 4. Trigger drawing frames
         draw()
         
-        # 4. Refresh display frame
-        pygame.display.update()
+        # 5. Flush the visual layout to the web container
+        pygame.display.flip()
 
-        # Hands control back to Chrome/Android so it doesn't freeze gray
+        # 6. Relinquish processing control so Chrome/Android doesn't freeze gray
         await asyncio.sleep(0)
 
-# Boot the script
+# Execute the application
 asyncio.run(main())
 
