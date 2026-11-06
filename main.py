@@ -1,14 +1,13 @@
 # /// script
 # dependencies = [
-#   "pgzero",
-#   "enum34; python_version < '3.4'",
+#   "pgzero"
 # ]
 # ///
 import pgzrun
 import asyncio
 
 #===============================================================================================================
-# Pure Pygame ZERO code
+# Your Pure Pygame ZERO code
 
 WIDTH = 800
 HEIGHT = 600
@@ -31,3 +30,4 @@ async def main():
 
 # Fire the script loop
 asyncio.run(main())
+
