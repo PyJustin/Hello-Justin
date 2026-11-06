@@ -1,4 +1,4 @@
-name: Build and Deploy Pygbag PWA
+name: Build and Deploy Pygbag PWA 
 on:
   push:
     branches:
