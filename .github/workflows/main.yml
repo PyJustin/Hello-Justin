@@ -24,6 +24,14 @@ jobs:
         run: |
           python -m pip install pygbag
           python -m pygbag --build .
+          
+      # FIX: Move files out of the Pygbag subfolder into the root of build/web
+      - name: Prepare Web Deployment Folder
+        run: |
+          if [ -d "build/web/Hello-Justin" ]; then
+            mv build/web/Hello-Justin/* build/web/
+            rm -rf build/web/Hello-Justin
+          fi
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
