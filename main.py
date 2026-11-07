@@ -8,7 +8,6 @@ import types
 import pygame
 
 # 1. FIX THE WINDOW ICON RESOURCING CRASH
-# Creates a tiny blank fake surface so Pygame Zero doesn't look for its missing file
 pygame.font.init()
 if not pygame.display.get_init():
     pygame.display.init()
@@ -35,7 +34,7 @@ if 'timeit' not in sys.modules:
 import pgzrun
 import asyncio
 
-#==============================================================================================================
+#===============================================================================================================
 # Your Pure Pygame ZERO code
 
 WIDTH = 800
@@ -43,11 +42,30 @@ HEIGHT = 600
 
 def draw():
     screen.clear()
+    
+    # NOTE: Ensure "lemon days.ttf" and "skincake.ttf" exist inside a "fonts" folder in your repository!
+    # If you don't have them yet, remove 'fontname="..."' to use the default system font for testing.
     screen.draw.text("Welcome to Pygame Zero", (100, 100), fontname="lemon days", fontsize=40, color=(255,215,0))
     screen.draw.text("Justin!", (630, 110), fontname="skincake", fontsize=40, color=(255,0,0))
 
-#================================================================================================================
+#===============================================================================================================
 # Pygbag Background Execution Loop
+
+async def main():
+    # Initialize the Pygame Zero runner engine without launching the blocking desktop loop
+    pgzrun.init() 
+
+    while True:
+        # Manually tick the Pygame Zero engine frame by frame
+        pgzrun.core.ptext.memory.clear() # Clear frame text cache
+        pgzrun.core.get_runner().frame_loop() 
+        
+        # Hands thread priority back to the browser engine to draw the screen
+        await asyncio.sleep(0)
+
+# Fire the script loop
+asyncio.run(main())
+
 
 async def main():
     pgzrun.go()
